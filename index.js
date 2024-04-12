@@ -7,6 +7,7 @@ app.get("/",(req,res) =>{
     res.send("Hola soy Juan Pablo Moreno")
 
 });
+app.use(express.json());
 
 //primer punto
 app.get("/coin", (req,res) =>{
@@ -95,21 +96,26 @@ app.get("/users/:count", (req,res) =>{
 
 //tercer punto 
 app.post('/users', (req, res) => {
+  
 
-  const { nombre, apellido, correo, ciudad = "Bogotá", país = "Colombia" } = req.body;
+  const { name, lastName, email, city = 'Bogotá', country = 'Colombia' } = req.body;
 
   // Comprobar que se proporcionaron los parámetros obligatorios
-  if (!nombre || !apellido || !correo) {
+  if (!name || !lastName || !email) {
     return res.status(400).json({ error: 'Faltan parámetros obligatorios' });
   }
 
-  // "Crear" el usuario
+  const validatedCity = city ==="" ? "Bogotá":city;
+  const validatedCountry = country === "" ? "Colombia": country;
+
+
+  // crear el usuario
   const usuario = {
-    nombre,
-    apellido,
-    correo,
-    ciudad,
-    país
+    name,
+    lastName,
+    email,
+    city: validatedCity,
+    country: validatedCountry
   };
 
   // Retornar el usuario creado como JSON
